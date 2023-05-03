@@ -1,13 +1,15 @@
 // import { confirmPasswordReset } from "firebase/auth";
-import { useState,useContext } from "react";
+import { useState} from "react";
+import { useDispatch } from "react-redux";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.util";
-import { UserContext } from "../contexts/user.context";
+// import { UserContext } from "../contexts/user.context";
 import './sign-up-form.styles.scss'
+import { signUpStart } from "../../store/user/user.action";
 
 const defaultFormFields = {
   displayName: "",
@@ -21,6 +23,7 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const dispatch = useDispatch();
   // console.log(formFields);
   // const {setCurrentUser} = useContext(UserContext);
   const resetFormFields = () => {
@@ -36,16 +39,17 @@ const SignUpForm = () => {
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log(user);
-      // const  {setCurrentUser} = useContext(UserContext);
+      // const { user } = await createAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+      // console.log(user);
+      // // const  {setCurrentUser} = useContext(UserContext);
      
-      // setCurrentUser(user);
+      // // setCurrentUser(user);
 
-      await createUserDocumentFromAuth(user, { displayName });
+      // await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email,password,displayName));
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
