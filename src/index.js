@@ -5,28 +5,32 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
+import { Elements } from "@stripe/react-stripe-js";
 // import { UserProvider } from "./components/contexts/user.context";
 // import { CategoriesProvider } from "./components/contexts/categories.context";
 // import { CartProvider } from "./components/contexts/cart.context";
 
 import { Provider } from "react-redux";
-import { store,persistor } from "./store/store";
+import { store, persistor } from "./store/store";
+import { stripePromise } from "./utils/stripe/stripe.utils";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>         loading={null} loads nothing till persist is fully completed 
+  // <React.StrictMode>         loading={null} loads nothing till persist is fully completed
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-  <BrowserRouter>
-    {/* <UserProvider> */}
-      {/* < CategoriesProvider> */}
+      <BrowserRouter>
+        {/* <UserProvider> */}
+        {/* < CategoriesProvider> */}
         {/* <CartProvider> */}
+        <Elements stripe={stripePromise}>
           <App />
+        </Elements>
         {/* </CartProvider> */}
-      {/* </ CategoriesProvider> */}
-    {/* </UserProvider> */}
-  </BrowserRouter>
-  </PersistGate>
+        {/* </ CategoriesProvider> */}
+        {/* </UserProvider> */}
+      </BrowserRouter>
+    </PersistGate>
   </Provider>
   // </React.StrictMode>
 );
